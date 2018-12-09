@@ -1,0 +1,183 @@
+﻿Version=6.5
+NumberOfModules=1
+Module1=Starter
+Build1=Default,b4a.example
+Build2=UnoevoHB,b4a.unoevo.hb
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'End of default text.~\n~
+IconFile=
+NumberOfFiles=1
+File1=layout1.bal
+NumberOfLibraries=4
+Library1=core
+Library2=serial
+Library3=randomaccessfile
+Library4=byteconverter
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Exemple
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: TRUE
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+	Dim admin As BluetoothAdmin
+	Dim nombreBT As Byte
+	Dim listName As List
+	Dim listMac As List
+	Dim serial1 As Serial
+	Dim Flux As AsyncStreams
+	
+	Dim Donnee() As Byte
+	Dim message As String
+	Dim bc As ByteConverter
+	
+	Private ButtonSearch As Button
+	Private BLE As ImageView
+	
+	Private Avancer As Button
+	Private Reculer As Button
+	Private Droite As Button
+	Private Gauche As Button
+	
+	Private LED As ImageView
+	Private LEDOFF As Button
+	Private LEDON As Button
+	
+	Private BuzzerOnOff As Button
+	Private Buzzer As ImageView
+	Private UNOEVO As ImageView
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	'Do not forget to load the layout file created with the visual designer. For example:
+	Activity.LoadLayout("Layout1")
+	admin.Initialize("admin")
+	serial1.Initialize("serial1")
+	LEDON.Visible=True
+	LEDOFF.Visible=False
+
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+Sub Admin_DeviceFound (Name As String, MacAddress As String)
+	nombreBT=nombreBT+1
+	listName.Add(Name)
+	listMac.Add(MacAddress)
+	
+End Sub
+
+Sub Admin_DiscoveryFinished
+	ProgressDialogHide
+	Msgbox("Nombre de périphériques trouvés "&nombreBT,"Fin de la recherche")
+	Dim choix As Int
+	choix=InputList(listName,"Choisissez un périphérique",-1)
+	ProgressDialogShow("Connexion au péripérique : " & listName.Get(choix))
+	serial1.Connect(listMac.Get(choix))
+End Sub
+
+Sub Serial1_Connected (Success As Boolean)
+	ProgressDialogHide
+	Msgbox("Connecté...","")
+	Flux.Initialize(serial1.InputStream,serial1.OutputStream,"Flux")
+End Sub
+
+Sub ButtonSearch_Click
+	admin.StartDiscovery
+	ProgressDialogShow("Recherche de périphériques Bluetooth...")
+	listName.Initialize
+	listMac.Initialize
+	
+End Sub
+
+Sub Avancer_Down
+	message="Z"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub Avancer_Up
+	message="B"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+
+Sub Reculer_Down
+	message="S"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub Reculer_Up
+	message="B"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub Gauche_Down
+	message="Q"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub Gauche_Up
+	message="B"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub Droite_Down
+	message="D"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub Droite_Up
+	message="B"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub BuzzerOnOff_Click
+	message="R"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+End Sub
+
+Sub LEDON_Click
+	message="L"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+	LEDOFF.Visible=True
+	LEDON.Visible=False
+End Sub
+
+Sub LEDOFF_Click
+	message="F"
+	Donnee=bc.StringToBytes(message,"ASCII")
+	Flux.Write(Donnee)
+	LEDON.Visible=True
+	LEDOFF.Visible=False
+End Sub
