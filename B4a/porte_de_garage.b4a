@@ -49,18 +49,8 @@ Sub Globals
 	
 	Private ButtonSearch As Button
 	Private BLE As ImageView
-	
 	Private Avancer As Button
 	Private Reculer As Button
-	Private Droite As Button
-	Private Gauche As Button
-	
-	Private LED As ImageView
-	Private LEDOFF As Button
-	Private LEDON As Button
-	
-	Private BuzzerOnOff As Button
-	Private Buzzer As ImageView
 	Private UNOEVO As ImageView
 End Sub
 
@@ -69,9 +59,6 @@ Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("Layout1")
 	admin.Initialize("admin")
 	serial1.Initialize("serial1")
-	LEDON.Visible=True
-	LEDOFF.Visible=False
-
 End Sub
 
 Sub Activity_Resume
@@ -111,73 +98,20 @@ Sub ButtonSearch_Click
 	
 End Sub
 
-Sub Avancer_Down
+Sub Stop_Click
 	message="Z"
 	Donnee=bc.StringToBytes(message,"ASCII")
 	Flux.Write(Donnee)
 End Sub
 
-Sub Avancer_Up
-	message="B"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-End Sub
-
-
-Sub Reculer_Down
-	message="S"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-End Sub
-
-Sub Reculer_Up
-	message="B"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-End Sub
-
-Sub Gauche_Down
-	message="Q"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-End Sub
-
-Sub Gauche_Up
-	message="B"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-End Sub
-
-Sub Droite_Down
+Sub Reculer_Click
 	message="D"
 	Donnee=bc.StringToBytes(message,"ASCII")
 	Flux.Write(Donnee)
 End Sub
 
-Sub Droite_Up
-	message="B"
+Sub Avancer_Click
+	message="A"
 	Donnee=bc.StringToBytes(message,"ASCII")
 	Flux.Write(Donnee)
-End Sub
-
-Sub BuzzerOnOff_Click
-	message="R"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-End Sub
-
-Sub LEDON_Click
-	message="L"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-	LEDOFF.Visible=True
-	LEDON.Visible=False
-End Sub
-
-Sub LEDOFF_Click
-	message="F"
-	Donnee=bc.StringToBytes(message,"ASCII")
-	Flux.Write(Donnee)
-	LEDON.Visible=True
-	LEDOFF.Visible=False
 End Sub
