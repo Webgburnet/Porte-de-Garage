@@ -2,7 +2,7 @@
 NumberOfModules=1
 Module1=Starter
 Build1=Default,b4a.example
-Build2=UnoevoHB,b4a.unoevo.hb
+Build2=Porte,b4a.porte
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'End of default text.~\n~
 IconFile=
 NumberOfFiles=1
@@ -14,7 +14,7 @@ Library3=randomaccessfile
 Library4=byteconverter
 @EndOfDesignText@
 #Region  Project Attributes 
-	#ApplicationLabel: Exemple
+	#ApplicationLabel: Porte de Garage
 	#VersionCode: 1
 	#VersionName: 
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
