@@ -4,22 +4,22 @@
 #include <SoftwareSerial.h>
 
 // Declaration variable //
-#define emetteur_infra 2 //Grove emitter infrared
-#define capteur_presence 3 //Grove receiver infrared
+#define capteur_presence 2 //Grove receiver infrared
+#define emetteur_infra 3 //Grove emitter infrared
 #define fdchaut 4 //Grove 
 #define fdcbas 5 //Grove
 #define capteur_distance 6 //Grove PIR
 #define BP_ouverture 7 //Grove button
 #define BP_fermeture 8 //Grove button
 #define commande_moteur_horaire 9 //Grove relay
-#define commande_moteur_horaire2 10 //Grove relay
-#define commande_moteur_antihoraire 11 //Grove relay
+#define commande_moteur_horaire2 11 //Grove relay
+#define commande_moteur_antihoraire 10 //Grove relay
 #define commande_moteur_antihoraire2 12 //Grove relay
-#define alarme_visuel 14 //Grove LED //Broche A1
-#define alarme_sonore 15 //Grove Buzzer //Broche A2
-#define detecteur_mur_fond 16 //Grove Ultrasonic //Broche A3
-#define RX 17 //Grove bluetooth //Broche A4
-#define TX 18 // Grove bluetooth //Broche A5
+#define alarme_visuel 14 //Grove LED //Broche A0
+#define alarme_sonore 15 //Grove Buzzer //Broche A1
+#define detecteur_mur_fond 16 //Grove Ultrasonic //Broche A2
+#define RX 17 //Grove bluetooth //Broche A3
+#define TX 18 // Grove bluetooth //Broche A4
 
 SoftwareSerial mySerial(RX,TX);
 
@@ -66,6 +66,8 @@ void loop()
     Serial.print("distance sol : ");
     Serial.print(distance_sol);
     Serial.println(" cm");
+
+    Serial.println(capteur_presence);
     
     // Ordre de marche bluetooth //
     Serial.print("\t");
@@ -88,18 +90,35 @@ void loop()
         commande_bluetooth = 30;
       }
     }
-    if(digitalRead(fdchaut) || digitalRead(fdcbas)) // Arrêt de l'ordre de marche bluetooth si fin de course //
-    {
-      commande_bluetooth = 50;
-    }
     
     // Commande moteur ouverture //
-    if((digitalRead(BP_ouverture) || digitalRead(capteur_presence) || commande_bluetooth == 10) && !digitalRead(fdchaut))
+    if((digitalRead(BP_ouverture) || commande_bluetooth == 10) && !digitalRead(fdchaut))
     {
       digitalWrite(commande_moteur_horaire,HIGH);
       digitalWrite(commande_moteur_horaire2,HIGH);
       digitalWrite(commande_moteur_antihoraire,LOW);
       digitalWrite(commande_moteur_antihoraire2,LOW);
+      commande_bluetooth = 10;
+    }
+
+    else if(digitalRead(capteur_presence) && !digitalRead(fdchaut))
+    {
+      if(!digitalRead(fdcbas))
+      {
+       digitalWrite(commande_moteur_horaire,HIGH);
+      digitalWrite(commande_moteur_horaire2,HIGH);
+      digitalWrite(commande_moteur_antihoraire,LOW);
+      digitalWrite(commande_moteur_antihoraire2,LOW);
+       commande_bluetooth =10;
+      }
+      else
+      {
+        digitalWrite(commande_moteur_horaire,LOW);
+       digitalWrite(commande_moteur_horaire2,LOW);
+       digitalWrite(commande_moteur_antihoraire,LOW);
+       digitalWrite(commande_moteur_antihoraire2,LOW);
+       commande_bluetooth = 30;
+      }
     }
 
     // Commande moteur fermeture //
@@ -109,22 +128,17 @@ void loop()
        digitalWrite(commande_moteur_horaire2,LOW);
        digitalWrite(commande_moteur_antihoraire,HIGH);
        digitalWrite(commande_moteur_antihoraire2,HIGH);
+       commande_bluetooth = 20;
     }
     
     // arrêt des moteur //
-    else if(commande_bluetooth == 30)
+    else if(commande_bluetooth == 30 || digitalRead(fdchaut) || digitalRead(fdcbas))
     {
        digitalWrite(commande_moteur_horaire,LOW);
        digitalWrite(commande_moteur_horaire2,LOW);
        digitalWrite(commande_moteur_antihoraire,LOW);
        digitalWrite(commande_moteur_antihoraire2,LOW);
-    }
-    else
-    {
-       digitalWrite(commande_moteur_horaire,LOW);
-       digitalWrite(commande_moteur_horaire2,LOW);
-       digitalWrite(commande_moteur_antihoraire,LOW);
-       digitalWrite(commande_moteur_antihoraire2,LOW);
+       commande_bluetooth = 30;
     }
     
     // radar de recul //
@@ -183,4 +197,3 @@ void loop()
       digitalWrite(alarme_sonore, LOW);
     }
 }
-
