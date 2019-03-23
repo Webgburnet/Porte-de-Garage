@@ -9,30 +9,30 @@
 ![Fritzing]()
 
 ### Shield
-* NC
+* Shield Grove
 
 ### Analogique
-* A0: NC
-* A1: NC
-* A2: NC
-* A3: NC
-* A4: NC
+* A0: Grove LED
+* A1: Grove Buzzer
+* A2: Grove Ultrasonic
+* A3: Grove bluetooth RX
+* A4: Grove bluetooth TX
 * A5: NC
 
 ### Digital
 * D0 : RX rs232 non utilise
 * D1 : TX rs232 non utilise
-* D2 : NC
-* D3 : NC
-* D4 : NC
-* D5 : NC
-* D6 : NC
-* D7 : NC
-* D8 : NC
-* D9 : NC
-* D10 : NC
-* D11 : NC
-* D12 : NC
+* D2 : Grove receiver infrared
+* D3 : Grove emitter infrared
+* D4 : Grove button
+* D5 : Grove button
+* D6 : Grove PIR
+* D7 : Grove button
+* D8 : Grove button
+* D9 : Grove relay
+* D10 : Grove relay
+* D11 : Grove relay
+* D12 : Grove relay
 * D13 : NC 
 
 ### I2C
